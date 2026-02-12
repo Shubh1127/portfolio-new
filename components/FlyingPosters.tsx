@@ -15,6 +15,7 @@ type OGLProgram = Program;
 type OGLMesh = Mesh;
 type OGLTransform = Transform;
 type OGLPlane = Plane;
+type OGLCamera = InstanceType<typeof Camera>;
 
 interface ScreenSize {
     width: number;
@@ -349,7 +350,8 @@ class Media {
         );
 
         this.program.uniforms.uPosition.value = position;
-        this.program.uniforms.uTime.value += 0.04;
+        this.program.uniforms.uTime.value =
+            (this.program.uniforms.uTime.value as number) + 0.04;
         this.program.uniforms.uSpeed.value = scroll.current;
 
         const planeHeight = this.plane.scale.y;
@@ -378,7 +380,7 @@ class Canvas {
 
     renderer!: Renderer;
     gl!: GL;
-    camera!: Camera;
+    camera!: OGLCamera;
     scene!: OGLTransform;
     planeGeometry!: OGLPlane;
     medias!: Media[];

@@ -9,6 +9,7 @@ import { Github, Instagram, Linkedin, Twitter } from 'lucide-react';
 
 const Banner = () => {
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const easeOut = [0.25, 0.1, 0.25, 1] as const;
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -28,7 +29,7 @@ const Banner = () => {
             opacity: 1,
             transition: {
                 duration: 1,
-                ease: 'easeOut',
+                ease: easeOut,
             },
         },
     };
@@ -40,7 +41,7 @@ const Banner = () => {
             opacity: 1,
             transition: {
                 duration: 1,
-                ease: 'easeOut',
+                ease: easeOut,
             },
         },
     };
@@ -52,7 +53,7 @@ const Banner = () => {
             opacity: 1,
             transition: {
                 duration: 1,
-                ease: 'easeOut',
+                ease: easeOut,
             },
         },
     };
@@ -64,7 +65,7 @@ const Banner = () => {
             opacity: 1,
             transition: {
                 duration: 0.8,
-                ease: 'easeOut',
+                ease: easeOut,
             },
         },
     };
@@ -76,7 +77,7 @@ const Banner = () => {
             opacity: 1,
             transition: {
                 duration: 0.8,
-                ease: 'easeOut',
+                ease: easeOut,
             },
         },
     };
@@ -88,7 +89,7 @@ const Banner = () => {
             opacity: 1,
             transition: {
                 duration: 0.8,
-                ease: 'easeOut',
+                ease: easeOut,
             },
         },
     };
@@ -100,7 +101,7 @@ const Banner = () => {
             opacity: 1,
             transition: {
                 duration: 0.8,
-                ease: 'easeOut',
+                ease: easeOut,
             },
         },
     };
