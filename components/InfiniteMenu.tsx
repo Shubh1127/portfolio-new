@@ -505,7 +505,7 @@ function createAndSetupTexture(
     return texture;
 }
 
-type UpdateCallback = (deltaTime: number) => void;
+type UpdateCallback = (_deltaTime: number) => void;
 
 class ArcballControl {
     private canvas: HTMLCanvasElement;
@@ -687,9 +687,9 @@ interface MenuItem {
     description: string;
 }
 
-type ActiveItemCallback = (index: number) => void;
-type MovementChangeCallback = (isMoving: boolean) => void;
-type InitCallback = (instance: InfiniteGridMenu) => void;
+type ActiveItemCallback = (_index: number) => void;
+type MovementChangeCallback = (_isMoving: boolean) => void;
+type InitCallback = (_instance: InfiniteGridMenu) => void;
 
 interface Camera {
     matrix: mat4;
@@ -779,14 +779,23 @@ class InfiniteGridMenu {
     public smoothRotationVelocity = 0;
     public scaleFactor = 1.0;
 
+    private canvas: HTMLCanvasElement;
+    private items: MenuItem[];
+    private onActiveItemChange: ActiveItemCallback;
+    private onMovementChange: MovementChangeCallback;
+
     constructor(
-        private canvas: HTMLCanvasElement,
-        private items: MenuItem[],
-        private onActiveItemChange: ActiveItemCallback,
-        private onMovementChange: MovementChangeCallback,
+        canvas: HTMLCanvasElement,
+        items: MenuItem[],
+        onActiveItemChange: ActiveItemCallback,
+        onMovementChange: MovementChangeCallback,
         onInit?: InitCallback,
         scale: number = 1.0,
     ) {
+        this.canvas = canvas;
+        this.items = items;
+        this.onActiveItemChange = onActiveItemChange;
+        this.onMovementChange = onMovementChange;
         this.scaleFactor = scale;
         this.camera.position[2] = 3 * scale;
         this.init(onInit);
@@ -1320,7 +1329,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
                 className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
             />
 
-            {activeItem && (
+            {activeItem ? (
                 <>
                     <h2
                         className={`
@@ -1395,7 +1404,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
                         </p>
                     </div>
                 </>
-            )}
+            ) : null}
         </div>
     );
 };
