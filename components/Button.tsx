@@ -50,18 +50,10 @@ const Button = ({
     ...rest
 }: Props) => {
     const variantClasses = {
-        primary: `bg-primary text-primary-foreground  hover:bg-primary-hover`,
-        secondary: `bg-secondary text-secondary-foreground hover:bg-secondary-hover`,
-        success: `bg-green-500 text-white hover:bg-green-600`,
-        warning: `bg-orange-500 text-white hover:bg-orange-600`,
-        danger: `bg-destructive text-destructive-foreground hover:bg-destructive/70`,
-        info: `bg-blue-500 text-white hover:bg-blue-600`,
-        light: `bg-background-active text-foreground hover:bg-background-active`,
-        dark: `bg-foreground text-background hover:bg-foreground/80`,
         glass: `rounded-full bg-gradient-to-br from-cyan-100/60 via-white/40 to-cyan-300/40 text-slate-900 border border-white/60 ring-1 ring-white/40 backdrop-blur-[28px] shadow-[0_20px_50px_rgba(0,140,255,0.25)] before:content-[''] before:absolute before:inset-[2px] before:rounded-full before:bg-gradient-to-b before:from-white/80 before:via-white/30 before:to-transparent before:opacity-80 before:pointer-events-none after:content-[''] after:absolute after:top-2 after:left-3 after:h-3 after:w-8 after:rounded-full after:bg-white/70 after:blur-[1px] after:opacity-80 after:pointer-events-none hover:from-cyan-200/70 hover:to-cyan-400/50`,
         link: `text-foreground hover:text-primary`,
         'no-color': '',
-    }[variant || 'primary'];
+    }[variant || 'glass'];
 
     const iconClasses = cn(
         'min-w-9 aspect-square text-xl p-0 inline-flex items-center justify-center rounded-md',

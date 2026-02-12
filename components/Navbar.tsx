@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { GENERAL_INFO, SOCIAL_LINKS } from '@/lib/data';
+import { INFO, SOCIAL_LINKS } from '@/lib/data';
 import gsap from 'gsap';
 import MetallicPaint from './MetallicPaint';
 
@@ -434,9 +434,7 @@ const Navbar = () => {
 
                 <div className="w-full max-w-[300px] mx-8 sm:mx-auto">
                     <p className="text-muted-foreground mb-4">GET IN TOUCH</p>
-                    <a href={`mailto:${GENERAL_INFO.email}`}>
-                        {GENERAL_INFO.email}
-                    </a>
+                    <a href={`mailto:${INFO.email}`}>{INFO.email}</a>
                 </div>
             </div>
         </div>
