@@ -5,7 +5,7 @@ import { ReactLenis } from 'lenis/react';
 import 'lenis/dist/lenis.css';
 import './globals.css';
 import ScrollProgressIndicator from '@/components/ScrollProgressIndicator';
-import FluidBackground from '@/components/FluidBackground';
+// import FluidBackground from '@/components/FluidBackground';
 import Navbar from '@/components/Navbar';
 import CustomCursor from '@/components/CustomCursor';
 import Preloader from '../components/Preloader';
@@ -66,7 +66,7 @@ export default function RootLayout({
                     <CustomCursor />
                     <Preloader />
                     <ScrollProgressIndicator />
-                    <FluidBackground />
+                    {/* <FluidBackground /> */}
                     <StickyEmail />
                 </ReactLenis>
             </body>
