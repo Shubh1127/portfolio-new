@@ -23,6 +23,7 @@ const MENU_LINKS = [
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isPreloading, setIsPreloading] = useState(true);
     const router = useRouter();
     const circleRefs = useRef<Array<HTMLSpanElement | null>>([]);
     const tlRefs = useRef<Array<gsap.core.Timeline | null>>([]);
@@ -34,6 +35,18 @@ const Navbar = () => {
     const isCenteredRef = useRef(false);
 
     useEffect(() => {
+        const finish = () => setIsPreloading(false);
+
+        if (!document.body.classList.contains('preloader-active')) {
+            finish();
+        }
+
+        window.addEventListener('preloader:done', finish);
+        return () => window.removeEventListener('preloader:done', finish);
+    }, []);
+
+    useEffect(() => {
+        if (isPreloading) return;
         const layout = () => {
             circleRefs.current.forEach((circle) => {
                 if (!circle?.parentElement) return;
@@ -125,7 +138,7 @@ const Navbar = () => {
         }
 
         return () => window.removeEventListener('resize', onResize);
-    }, []);
+    }, [isPreloading]);
 
     const handleEnter = (i: number) => {
         const tl = tlRefs.current[i];
@@ -150,6 +163,7 @@ const Navbar = () => {
     };
 
     useEffect(() => {
+        if (isPreloading) return;
         const el = navWrapRef.current;
         if (!el) return;
 
@@ -193,10 +207,12 @@ const Navbar = () => {
             window.removeEventListener('scroll', onScroll);
             window.removeEventListener('resize', onResize);
         };
-    }, []);
+    }, [isPreloading]);
+
+    if (isPreloading) return null;
 
     return (
-        <>
+        <div className="navbar-shell">
             {/* Logo on the left */}
             <div className="fixed top-5 left-5 md:left-10 z-[40]">
                 <div
@@ -423,7 +439,7 @@ const Navbar = () => {
                     </a>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
