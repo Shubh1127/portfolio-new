@@ -173,7 +173,7 @@ const useFluidCursor = () => {
     );
 
     const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
-    return status == gl.FRAMEBUFFER_COMPconst E;
+    return status == gl.FRAMEBUFFER_COMPLETE;
   }
 
   class Material {
@@ -186,8 +186,8 @@ const useFluidCursor = () => {
     }
 
     setKeywords(keywords) {
-      const  hash = 0;
-      for (const  i = 0; i < keywords.length; i++) hash += hashCode(keywords[i]);
+      let hash = 0;
+      for (let i = 0; i < keywords.length; i++) hash += hashCode(keywords[i]);
 
       const  program = this.programs[hash];
       if (program == null) {
@@ -238,7 +238,7 @@ const useFluidCursor = () => {
   function getUniforms(program) {
     const  uniforms = [];
     const  uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
-    for (const  i = 0; i < uniformCount; i++) {
+    for (let i = 0; i < uniformCount; i++) {
       const  uniformName = gl.getActiveUniform(program, i).name;
       uniforms[uniformName] = gl.getUniformLocation(program, uniformName);
     }
@@ -896,7 +896,7 @@ const useFluidCursor = () => {
       },
     };
 
-    const  image = new Image();
+    const image = new Image();
     image.onload = () => {
       obj.width = image.width;
       obj.height = image.height;
@@ -1016,7 +1016,7 @@ const useFluidCursor = () => {
       velocity.texelSizeY
     );
     gl.uniform1i(pressureProgram.uniforms.uDivergence, divergence.attach(0));
-    for (const  i = 0; i < config.PRESSURE_ITERATIONS; i++) {
+    for (let i = 0; i < config.PRESSURE_ITERATIONS; i++) {
       gl.uniform1i(pressureProgram.uniforms.uPressure, pressure.read.attach(1));
       blit(pressure.write);
       pressure.swap();
@@ -1179,7 +1179,7 @@ const useFluidCursor = () => {
       const touches = e.targetTouches;
       const  pointer = pointers[0];
 
-      for (const  i = 0; i < touches.length; i++) {
+      for (let i = 0; i < touches.length; i++) {
         const  posX = scaleByPixelRatio(touches[i].clientX);
         const  posY = scaleByPixelRatio(touches[i].clientY);
 
@@ -1195,7 +1195,7 @@ const useFluidCursor = () => {
   window.addEventListener('touchstart', (e) => {
     const touches = e.targetTouches;
     const  pointer = pointers[0];
-    for (const  i = 0; i < touches.length; i++) {
+    for (let i = 0; i < touches.length; i++) {
       const  posX = scaleByPixelRatio(touches[i].clientX);
       const  posY = scaleByPixelRatio(touches[i].clientY);
       updatePointerDownData(pointer, touches[i].identifier, posX, posY);
@@ -1207,7 +1207,7 @@ const useFluidCursor = () => {
     (e) => {
       const touches = e.targetTouches;
       const  pointer = pointers[0];
-      for (const  i = 0; i < touches.length; i++) {
+      for (let i = 0; i < touches.length; i++) {
         const  posX = scaleByPixelRatio(touches[i].clientX);
         const  posY = scaleByPixelRatio(touches[i].clientY);
         updatePointerMoveData(pointer, posX, posY, pointer.color);
@@ -1220,7 +1220,7 @@ const useFluidCursor = () => {
     const touches = e.changedTouches;
     const  pointer = pointers[0];
 
-    for (const  i = 0; i < touches.length; i++) {
+    for (let i = 0; i < touches.length; i++) {
       updatePointerUpData(pointer);
     }
   });
@@ -1350,8 +1350,8 @@ const useFluidCursor = () => {
 
   function hashCode(s) {
     if (s.length == 0) return 0;
-    const  hash = 0;
-    for (const  i = 0; i < s.length; i++) {
+    let hash = 0;
+    for (let i = 0; i < s.length; i++) {
       hash = (hash << 5) - hash + s.charCodeAt(i);
       hash |= 0; // Convert to 32bit integer
     }
