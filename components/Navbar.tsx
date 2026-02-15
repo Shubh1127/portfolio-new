@@ -285,9 +285,12 @@ const Navbar = () => {
                                 return (
                                     <li key={item.url} className="flex h-full">
                                         <button
-                                            onClick={() =>
-                                                router.push(item.url)
-                                            }
+                                            onClick={() => {
+                                                router.push(item.url);
+                                                if (item.url === '/') {
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                }
+                                            }}
                                             className="relative overflow-hidden inline-flex items-center justify-center h-full rounded-full font-semibold text-[16px] uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer"
                                             style={pillStyle}
                                             onMouseEnter={() => handleEnter(i)}
@@ -419,6 +422,9 @@ const Navbar = () => {
                                         <button
                                             onClick={() => {
                                                 router.push(link.url);
+                                                if (link.url === '/') {
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                }
                                                 setIsMenuOpen(false);
                                             }}
                                             className="text-xl hover:underline"
