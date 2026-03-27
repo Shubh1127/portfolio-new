@@ -61,7 +61,7 @@ const Button = ({
     );
 
     const buttonClasses = cn(
-        `group h-12 px-8 inline-flex justify-center items-center gap-2 text-lg uppercase font-anton tracking-widest outline-none transition-colors relative overflow-hidden`,
+        `group h-11 sm:h-12 px-5 sm:px-8 inline-flex justify-center items-center gap-2 text-sm sm:text-lg uppercase font-anton tracking-[0.08em] sm:tracking-widest outline-none transition-colors relative overflow-hidden`,
         variantClasses,
         { [iconClasses]: icon },
         className,

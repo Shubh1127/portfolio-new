@@ -314,6 +314,24 @@ const Navbar = () => {
         };
     }, [pathname]);
 
+    useEffect(() => {
+        setIsMenuOpen(false);
+    }, [pathname]);
+
+    useEffect(() => {
+        const previousOverflow = document.body.style.overflow;
+
+        if (isMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = previousOverflow;
+        }
+
+        return () => {
+            document.body.style.overflow = previousOverflow;
+        };
+    }, [isMenuOpen]);
+
     if (isPreloading) return null;
 
     return (
@@ -455,7 +473,8 @@ const Navbar = () => {
                     <button
                         ref={hamburgerRef}
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="md:hidden rounded-full flex items-center justify-center bg-black"
+                        className="md:hidden rounded-full flex items-center justify-center bg-black shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+                        aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                         style={{
                             width: 'var(--nav-h)',
                             height: 'var(--nav-h)',
@@ -484,7 +503,7 @@ const Navbar = () => {
             {/* Mobile Menu Overlay */}
             <div
                 className={cn(
-                    'overlay fixed inset-0 z-[2] bg-black/70 transition-all duration-150',
+                    'overlay fixed inset-0 z-[34] bg-black/70 transition-all duration-200 md:hidden',
                     {
                         'opacity-0 invisible pointer-events-none': !isMenuOpen,
                     },
@@ -495,23 +514,23 @@ const Navbar = () => {
             {/* Mobile Menu */}
             <div
                 className={cn(
-                    'fixed top-0 right-0 h-[100dvh] w-[500px] max-w-[calc(100vw-3rem)] transform translate-x-full transition-transform duration-700 z-[3] overflow-hidden gap-y-14',
-                    'flex flex-col lg:justify-center py-10 backdrop-blur-lg bg-white/5 border border-white/10',
+                    'fixed top-3 right-3 bottom-3 h-auto w-[min(92vw,420px)] max-w-[calc(100vw-1.5rem)] transform translate-x-[110%] transition-transform duration-500 z-[35] overflow-y-auto overscroll-contain gap-y-10 rounded-3xl md:hidden',
+                    'flex flex-col py-7 px-6 backdrop-blur-lg bg-white/10 border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.45)]',
                     { 'translate-x-0': isMenuOpen },
                 )}
             >
                 <div
                     className={cn(
-                        'fixed inset-0 scale-150 translate-x-1/2 rounded-[50%] duration-700 delay-150 z-[-1] backdrop-blur-3xl bg-white/10',
+                        'absolute inset-0 scale-150 translate-x-1/2 rounded-[50%] duration-500 delay-100 z-[-1] backdrop-blur-3xl bg-white/10',
                         {
                             'translate-x-0': isMenuOpen,
                         },
                     )}
                 ></div>
 
-                <div className="grow flex md:items-center w-full max-w-[300px] mx-8 sm:mx-auto">
-                    <div className="flex gap-10 lg:justify-between max-lg:flex-col w-full">
-                        <div className="max-lg:order-2">
+                <div className="grow flex items-start w-full pt-4">
+                    <div className="flex gap-8 flex-col w-full">
+                        <div className="order-2">
                             <p className="text-muted-foreground mb-5 md:mb-8">
                                 SOCIAL
                             </p>
@@ -522,7 +541,7 @@ const Navbar = () => {
                                             href={link.url}
                                             target="_blank"
                                             rel="noreferrer"
-                                            className="text-lg capitalize hover:underline"
+                                            className="text-base sm:text-lg capitalize hover:underline"
                                         >
                                             {link.name}
                                         </a>
@@ -542,7 +561,7 @@ const Navbar = () => {
                                                 handleNavClick(link.url);
                                                 setIsMenuOpen(false);
                                             }}
-                                            className="text-xl hover:underline"
+                                            className="text-lg sm:text-xl hover:underline"
                                         >
                                             {link.name}
                                         </button>
@@ -553,9 +572,11 @@ const Navbar = () => {
                     </div>
                 </div>
 
-                <div className="w-full max-w-[300px] mx-8 sm:mx-auto">
+                <div className="w-full">
                     <p className="text-muted-foreground mb-4">GET IN TOUCH</p>
-                    <a href={`mailto:${INFO.email}`}>{INFO.email}</a>
+                    <a href={`mailto:${INFO.email}`} className="break-all">
+                        {INFO.email}
+                    </a>
                 </div>
             </div>
         </div>

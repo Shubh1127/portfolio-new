@@ -9,7 +9,39 @@ import { Github, Instagram, Linkedin, Twitter } from 'lucide-react';
 
 const Banner = () => {
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const [viewportWidth, setViewportWidth] = React.useState(0);
     const easeOut = [0.25, 0.1, 0.25, 1] as const;
+
+    React.useEffect(() => {
+        const updateViewportWidth = () => {
+            setViewportWidth(window.innerWidth);
+        };
+
+        updateViewportWidth();
+        window.addEventListener('resize', updateViewportWidth);
+
+        return () => {
+            window.removeEventListener('resize', updateViewportWidth);
+        };
+    }, []);
+
+    const fullStackMinFont =
+        viewportWidth >= 1280
+            ? 56
+            : viewportWidth >= 1024
+            ? 50
+            : viewportWidth >= 768
+            ? 42
+            : 30;
+
+    const developerMinFont =
+        viewportWidth >= 1280
+            ? 72
+            : viewportWidth >= 1024
+            ? 64
+            : viewportWidth >= 768
+            ? 54
+            : 40;
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -137,23 +169,20 @@ const Banner = () => {
         <section className="relative overflow-hidden" id="banner">
             <ArrowAnimation />
             <div
-                className="container h-[100svh] min-h-[530px] max-md:pb-10 flex justify-between items-center max-md:flex-col"
+                className="container min-h-[100svh] py-24 md:py-14 lg:py-0 flex flex-col md:flex-row justify-between items-start md:items-center"
                 ref={containerRef}
             >
                 <motion.div
-                    className="max-md:grow max-md:flex flex-col justify-center items-start max-w-[544px]"
+                    className="w-full max-w-[544px] grow md:grow-0 flex flex-col justify-center items-start"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
                 >
                     <motion.div
-                        className="banner-title leading-[.95]"
+                        className="banner-title leading-[.95] w-full max-w-[640px]"
                         variants={titleVariants}
                     >
-                        <div
-                            style={{ position: 'relative', minHeight: '80px' }}
-                            className="sm:min-h-[100px] overflow-visible"
-                        >
+                        <div className="relative min-h-[64px] sm:min-h-[86px] md:min-h-[98px] lg:min-h-[110px] overflow-visible">
                             <TextPressure
                                 text="FULL STACK"
                                 flex={false}
@@ -163,18 +192,11 @@ const Banner = () => {
                                 weight={true}
                                 italic={true}
                                 textColor="hsl(var(--primary))"
-                                minFontSize={40}
+                                minFontSize={fullStackMinFont}
                                 className="text-left"
                             />
                         </div>
-                        <div
-                            style={{
-                                position: 'relative',
-                                minHeight: '80px',
-                                marginLeft: '1rem',
-                            }}
-                            className="sm:min-h-[100px] overflow-visible"
-                        >
+                        <div className="relative min-h-[72px] sm:min-h-[96px] md:min-h-[110px] lg:min-h-[122px] ml-2 sm:ml-4 md:ml-6 overflow-visible">
                             <TextPressure
                                 text="DEVELOPER"
                                 flex={false}
@@ -184,13 +206,13 @@ const Banner = () => {
                                 weight={true}
                                 italic={true}
                                 textColor="hsl(var(--foreground))"
-                                minFontSize={60}
+                                minFontSize={developerMinFont}
                                 className="text-left"
                             />
                         </div>
                     </motion.div>
                     <motion.p
-                        className="banner-description mt-6 text-lg text-muted-foreground"
+                        className="banner-description mt-6 text-base sm:text-lg text-muted-foreground max-w-[62ch]"
                         variants={descriptionVariants}
                     >
                         Hi! I&apos;m{' '}
@@ -201,14 +223,17 @@ const Banner = () => {
                         experience in building high-performance, scalable, and
                         responsive web solutions.
                     </motion.p>
-                    <motion.div className="" variants={buttonVariants}>
+                    <motion.div
+                        className="mt-8 flex flex-wrap items-center gap-3"
+                        variants={buttonVariants}
+                    >
                         <Button
                             as="link"
                             target="_blank"
                             rel="noopener noreferrer"
                             href={INFO.upworkProfile}
                             variant="glass"
-                            className="mt-9 banner-button"
+                            className="banner-button"
                         >
                             Hire Me
                         </Button>
@@ -218,7 +243,7 @@ const Banner = () => {
                             rel="noopener noreferrer"
                             href={INFO.githubProfile}
                             variant="glass"
-                            className="mt-9 ms-2 banner-button"
+                            className="banner-button"
                         >
                             View Github
                         </Button>
@@ -226,7 +251,7 @@ const Banner = () => {
                 </motion.div>
                 {/* social icons */}
                 <motion.div
-                    className="md:absolute bottom-[10%] right-[4%] flex md:flex-col gap-4 md:gap-8 text-center md:text-right"
+                    className="hidden md:flex md:absolute bottom-[10%] right-[4%] md:flex-col gap-4 md:gap-8 text-center md:text-right"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"

@@ -60,11 +60,11 @@ const Achievements = () => {
                 <div className="grid gap-14">
                     {My_Achievements.map((item) => (
                         <div key={item.title} className="experience-item group">
-                            <p className="text-xl text-muted-foreground">
+                            <p className="text-base sm:text-xl text-muted-foreground">
                                 {item.name}
                             </p>
 
-                            <p className="text-5xl font-anton leading-none mt-3.5 mb-2.5">
+                            <p className="text-3xl sm:text-4xl md:text-5xl font-anton leading-none mt-3.5 mb-2.5">
                                 <DecryptedText
                                     text={item.title}
                                     speed={50}
@@ -77,7 +77,7 @@ const Achievements = () => {
                                 />
                             </p>
 
-                            <p className="text-lg text-muted-foreground">
+                            <p className="text-base sm:text-lg text-muted-foreground">
                                 {item.time}
                             </p>
 

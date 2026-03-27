@@ -24,7 +24,7 @@ const Project = () => {
                     </span>
                 </h2>
             </div>
-            <div className="h-screen relative">
+            <div className="h-[85svh] md:h-screen relative">
                 <InfiniteMenu items={items} scale={1} />
             </div>
         </section>
