@@ -196,7 +196,22 @@ const Navbar = () => {
         const getRight = () =>
             window.innerWidth >= 768 ? '2.5rem' : '1.25rem';
 
+        const isDesktop = () => window.innerWidth >= 768;
+
+        const lockMobilePosition = () => {
+            gsap.killTweensOf(el);
+            gsap.set(el, {
+                right: getRight(),
+                xPercent: 0,
+            });
+        };
+
         const setPosition = (centered: boolean, immediate = false) => {
+            if (!isDesktop()) {
+                lockMobilePosition();
+                return;
+            }
+
             const right = centered ? '50%' : getRight();
             const xPercent = centered ? 50 : 0;
 
@@ -215,6 +230,11 @@ const Navbar = () => {
         };
 
         const onScroll = () => {
+            if (!isDesktop()) {
+                lockMobilePosition();
+                return;
+            }
+
             revealDesktopNav();
             const shouldCenter = window.scrollY > 80;
             if (shouldCenter === isCenteredRef.current) return;
@@ -223,14 +243,14 @@ const Navbar = () => {
         };
 
         const onResize = () => {
-            setPosition(isCenteredRef.current, true);
-
-            if (window.innerWidth < 768) {
+            if (!isDesktop()) {
+                lockMobilePosition();
                 clearHideDesktopNavTimer();
                 setIsDesktopNavVisible(true);
                 return;
             }
 
+            setPosition(isCenteredRef.current, true);
             scheduleHideDesktopNav();
         };
 
