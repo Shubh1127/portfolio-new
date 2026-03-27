@@ -30,6 +30,11 @@ const robotoFlex = Roboto_Flex({
 export const metadata: Metadata = {
     title: 'Portfolio - Shubham',
     description: 'Personal portfolio of Shubham',
+    icons: {
+        icon: '/logo/logo.png',
+        shortcut: '/logo/logo.png',
+        apple: '/logo/logo.png',
+    },
 };
 
 export default function RootLayout({
