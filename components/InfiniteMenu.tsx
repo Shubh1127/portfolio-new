@@ -1322,7 +1322,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
     };
 
     return (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full overflow-hidden">
             <canvas
                 id="infinite-grid-menu-canvas"
                 ref={canvasRef}
@@ -1336,12 +1336,21 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
           select-none
           absolute
           font-black
-          text-[2.5rem]
-          left-[1.6em]
-          top-1/2
+          text-[1.75rem]
+          md:text-[2.5rem]
+          left-1/2
+          md:left-[1.6em]
+          top-[14%]
+          md:top-1/2
           transform
-          translate-x-[20%]
-          -translate-y-1/2
+          -translate-x-1/2
+          md:translate-x-[20%]
+          translate-y-0
+          md:-translate-y-1/2
+          w-[90%]
+          md:w-auto
+          text-center
+          md:text-left
           transition-all
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
           ${
@@ -1358,17 +1367,26 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
                         className={`
           select-none
           absolute
-          max-w-[30ch]
-          text-[0.9rem]
+                    w-[92vw]
+                    max-w-[92vw]
+                    md:max-w-[30ch]
+                    text-[0.85rem]
+                    md:text-[0.9rem]
           leading-relaxed
-          top-1/2
-          right-[1%]
+                    left-1/2
+                    md:left-auto
+                    md:right-[1%]
+                    bottom-[0.6rem]
+                    md:bottom-auto
+                    md:top-1/2
+                    text-center
+                    md:text-left
           transition-all
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
           ${
               isMoving
-                  ? 'opacity-0 pointer-events-none duration-[100ms] translate-x-[-60%] -translate-y-1/2'
-                  : 'opacity-100 pointer-events-auto duration-[500ms] translate-x-[-90%] -translate-y-1/2'
+                  ? 'opacity-0 pointer-events-none duration-[100ms] -translate-x-1/2 md:translate-x-[-60%] translate-y-2 md:-translate-y-1/2'
+                  : 'opacity-100 pointer-events-auto duration-[500ms] -translate-x-1/2 md:translate-x-[-90%] translate-y-0 md:-translate-y-1/2'
           }
         `}
                     >
@@ -1381,12 +1399,15 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
           absolute
           left-1/2
           z-10
-          w-[60px]
-          h-[60px]
+          w-[52px]
+          h-[52px]
+          md:w-[60px]
+          md:h-[60px]
           grid
           place-items-center
           bg-[#00ffff]
-          border-[5px]
+          border-[4px]
+          md:border-[5px]
           border-black
           rounded-full
           cursor-pointer
@@ -1395,11 +1416,11 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
           ${
               isMoving
                   ? 'bottom-[-80px] opacity-0 pointer-events-none duration-[100ms] scale-0 -translate-x-1/2'
-                  : 'bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2'
+                  : 'bottom-[10.2em] md:bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2'
           }
         `}
                     >
-                        <p className="select-none relative text-[#060010] top-[2px] text-[26px]">
+                        <p className="select-none relative text-[#060010] top-[1px] md:top-[2px] text-[22px] md:text-[26px]">
                             &#x2197;
                         </p>
                     </div>
