@@ -1,7 +1,7 @@
 'use client';
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { INFO, SOCIAL_LINKS } from '@/lib/data';
 import gsap from 'gsap';
 import MetallicPaint from './MetallicPaint';
@@ -16,23 +16,49 @@ const MENU_LINKS = [
         url: '/#about-me',
     },
     {
-        name: 'Contact',
-        url: '/#contact',
+        name: 'Projects',
+        url: '/#projects',
     },
 ];
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isPreloading, setIsPreloading] = useState(true);
+    const [isDesktopNavVisible, setIsDesktopNavVisible] = useState(true);
     const router = useRouter();
+    const pathname = usePathname();
     const circleRefs = useRef<Array<HTMLSpanElement | null>>([]);
     const tlRefs = useRef<Array<gsap.core.Timeline | null>>([]);
     const activeTweenRefs = useRef<Array<gsap.core.Tween | null>>([]);
+    const pendingSectionRef = useRef<string | null>(null);
     const logoRef = useRef<HTMLDivElement | null>(null);
     const hamburgerRef = useRef<HTMLButtonElement | null>(null);
     const navItemsRef = useRef<HTMLDivElement | null>(null);
     const navWrapRef = useRef<HTMLDivElement | null>(null);
     const isCenteredRef = useRef(false);
+    const hideDesktopNavTimeoutRef = useRef<number | null>(null);
+
+    const clearHideDesktopNavTimer = () => {
+        if (hideDesktopNavTimeoutRef.current === null) return;
+        window.clearTimeout(hideDesktopNavTimeoutRef.current);
+        hideDesktopNavTimeoutRef.current = null;
+    };
+
+    const scheduleHideDesktopNav = () => {
+        if (window.innerWidth < 768) return;
+
+        clearHideDesktopNavTimer();
+        hideDesktopNavTimeoutRef.current = window.setTimeout(() => {
+            setIsDesktopNavVisible(false);
+        }, 900);
+    };
+
+    const revealDesktopNav = () => {
+        if (window.innerWidth < 768) return;
+
+        setIsDesktopNavVisible(true);
+        scheduleHideDesktopNav();
+    };
 
     useEffect(() => {
         const finish = () => setIsPreloading(false);
@@ -189,6 +215,7 @@ const Navbar = () => {
         };
 
         const onScroll = () => {
+            revealDesktopNav();
             const shouldCenter = window.scrollY > 80;
             if (shouldCenter === isCenteredRef.current) return;
             isCenteredRef.current = shouldCenter;
@@ -197,17 +224,95 @@ const Navbar = () => {
 
         const onResize = () => {
             setPosition(isCenteredRef.current, true);
+
+            if (window.innerWidth < 768) {
+                clearHideDesktopNavTimer();
+                setIsDesktopNavVisible(true);
+                return;
+            }
+
+            scheduleHideDesktopNav();
         };
 
         setPosition(isCenteredRef.current, true);
+        scheduleHideDesktopNav();
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', onResize);
 
         return () => {
             window.removeEventListener('scroll', onScroll);
             window.removeEventListener('resize', onResize);
+            clearHideDesktopNavTimer();
         };
     }, [isPreloading]);
+
+    const scrollToSection = (sectionId: string) => {
+        const section = document.getElementById(sectionId);
+        if (!section) return false;
+
+        section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        });
+
+        return true;
+    };
+
+    const handleNavClick = (url: string) => {
+        const [, sectionId] = url.split('#');
+
+        if (window.innerWidth >= 768) {
+            clearHideDesktopNavTimer();
+            setIsDesktopNavVisible(false);
+        }
+
+        if (!sectionId) {
+            pendingSectionRef.current = null;
+            if (pathname === '/') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                router.push('/');
+            }
+            return;
+        }
+
+        if (pathname === '/') {
+            scrollToSection(sectionId);
+            return;
+        }
+
+        pendingSectionRef.current = sectionId;
+        router.push('/');
+    };
+
+    useEffect(() => {
+        if (pathname !== '/' || !pendingSectionRef.current) return;
+
+        const sectionId = pendingSectionRef.current;
+        let rafId = 0;
+        let tries = 0;
+
+        const tryScroll = () => {
+            if (scrollToSection(sectionId)) {
+                pendingSectionRef.current = null;
+                return;
+            }
+
+            if (tries >= 120) {
+                pendingSectionRef.current = null;
+                return;
+            }
+
+            tries += 1;
+            rafId = window.requestAnimationFrame(tryScroll);
+        };
+
+        rafId = window.requestAnimationFrame(tryScroll);
+
+        return () => {
+            window.cancelAnimationFrame(rafId);
+        };
+    }, [pathname]);
 
     if (isPreloading) return null;
 
@@ -267,10 +372,26 @@ const Navbar = () => {
                     {/* Desktop Nav Items */}
                     <div
                         ref={navItemsRef}
-                        className="relative items-center rounded-full hidden md:flex"
+                        className={cn(
+                            'relative items-center rounded-full hidden md:flex transition-all duration-500 ease-out',
+                            {
+                                'opacity-100 translate-y-0 pointer-events-auto':
+                                    isDesktopNavVisible,
+                                'opacity-0 -translate-y-3 pointer-events-none':
+                                    !isDesktopNavVisible,
+                            },
+                        )}
                         style={{
                             height: 'var(--nav-h)',
                             background: 'var(--base)',
+                        }}
+                        onMouseEnter={() => {
+                            if (window.innerWidth < 768) return;
+                            clearHideDesktopNavTimer();
+                            setIsDesktopNavVisible(true);
+                        }}
+                        onMouseLeave={() => {
+                            scheduleHideDesktopNav();
                         }}
                     >
                         <ul className="list-none flex items-stretch m-0 p-[3px] h-full gap-[3px]">
@@ -286,10 +407,7 @@ const Navbar = () => {
                                     <li key={item.url} className="flex h-full">
                                         <button
                                             onClick={() => {
-                                                router.push(item.url);
-                                                if (item.url === '/') {
-                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                                                }
+                                                handleNavClick(item.url);
                                             }}
                                             className="relative overflow-hidden inline-flex items-center justify-center h-full rounded-full font-semibold text-[16px] uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer"
                                             style={pillStyle}
@@ -421,10 +539,7 @@ const Navbar = () => {
                                     <li key={link.name}>
                                         <button
                                             onClick={() => {
-                                                router.push(link.url);
-                                                if (link.url === '/') {
-                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                                                }
+                                                handleNavClick(link.url);
                                                 setIsMenuOpen(false);
                                             }}
                                             className="text-xl hover:underline"

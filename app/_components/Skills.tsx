@@ -63,7 +63,7 @@ const Skills = () => {
             {items.map((item) => (
                 <span
                     key={item.name}
-                    className="inline-flex items-center gap-4 mr-10"
+                    className="inline-flex items-center gap-4 mr-10 "
                 >
                     <Image
                         src={item.icon}
@@ -80,11 +80,11 @@ const Skills = () => {
 
     return (
         <section id="my-stack" ref={containerRef}>
-            <div className="container">
+            <div className="container ">
                 <SectionTitle title="My Stack" />
 
                 {/* Scrolling Velocity Sections */}
-                <div className="slide-up mb-20">
+                <div className="slide-up ">
                     <ScrollVelocity
                         rows={[
                             renderRow(MY_STACK.frontend),

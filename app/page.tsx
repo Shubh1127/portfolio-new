@@ -10,7 +10,7 @@ import Project from './_components/Project';
 
 export default function Home() {
     return (
-        <div className="page-">
+        <div className="">
             <Banner />
             <AboutMe />
             <Skills />

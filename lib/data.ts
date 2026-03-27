@@ -10,7 +10,7 @@ export const INFO = {
     upworkProfile: 'https://www.upwork.com/freelancers/~01a820589e1473f3e1',
     githubProfile: 'https://github.com/Shubh1127',
     linkedinProfile: 'https://www.linkedin.com/in/shubham-singh-7705512a7',
-    xProfile: 'https://x.com/NerdShubh',
+    xProfile: 'https://x.com/_Shubhamm_Singh',
     instagramProfile: 'https://www.instagram.com/shubhamm_1223',
 };
 
